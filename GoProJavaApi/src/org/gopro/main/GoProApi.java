@@ -8,6 +8,7 @@ import org.gopro.core.model.ENCameraReady;
 
 public class GoProApi {
 
+	private static final String _10_5_5_9 = "10.5.5.9";
 	public static final int _POLLINGTIME = 4000;
 	public static final int _RETRY_OPERATION = 3;
 
@@ -16,8 +17,25 @@ public class GoProApi {
 		try {
 			LogX.info("Go Pro Starting....");
 
+			//Getting the GoPro instance passing the credentials
 			GoProApi gopro = new GoProApi("goprt4231");
+			
+			//Starting a record in Go Pro
+			gopro.startRecord();
 
+			//Stopping a record in Go Pro
+			gopro.stopRecord();
+			
+			//Stop record and then dispatch a power off operation against GoPro camera
+			gopro.stopRecordAndPowerOff();
+			
+			//See more functions
+			GoProHelper helper = gopro.getHelper();
+			
+			//helper.deleteFilesOnSd()
+			
+			
+			//Example how power on and start, wait some seconds and then stop with power off
 			for (int i = 0; i < 10; i++) {
 
 				gopro.powerOnAndStartRecord();
@@ -192,7 +210,7 @@ public class GoProApi {
 	private GoProHelper helper;
 
 	public GoProApi(String password) {
-		setHelper(new GoProHelper("10.5.5.9", 80, password));
+		setHelper(new GoProHelper(_10_5_5_9, 80, password));
 
 	}
 
