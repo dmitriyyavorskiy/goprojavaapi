@@ -1,123 +1,29 @@
 #labels gopro,java,api,gopro,camera,java,gopro,java,interfaces
-This is a java project that contains the interfaces to work with Go Pro camera. 
+Questions? Just put in the comments below:
 
-Running over GO PRO HERO 3. 
-
-This project was started to help the advanced user who want to develop apps with Go Pro camera based on Java language. 
-
-*The APIS below were tested against lastest GOPRO camera with firmware version 3.0.(Current as of July 29, 2013)*
 
 ==Simples examples==
 
 {{{
 
-//Getting the GoPro instance passing the credentials, the password is the gopro password.
-//Dont forget you need to connect in gopro via wifi first. 
-GoProApi gopro = new GoProApi("goprt4231");
+//Be sure that you are connected to GoPro WIFI connection before to proceed
+			
+			//Getting the GoPro instance passing the credentials
+			GoProApi gopro = new GoProApi("goprt4231");
+		
+			//Getting extra functions
+			GoProHelper helper = gopro.getHelper();
+			
+			//With this function you will able to display the camera properties, like if the camera is ready to record or it is already power on.
+			BacPacStatus bacpacStatus = helper.getBacpacStatus();
+			
+			//Just testing if the camera is ready to proceed with the record process.
+			int cameraReady = bacpacStatus.getCameraReady();
+			System.out.println("Camera ready 		? " + cameraReady);
 
-//Starting a record in Go Pro
-gopro.startRecord();
-
-//Stopping a record in Go Pro
-gopro.stopRecord();
-
-//Stop record and then dispatch a power off operation against GoPro camera
-gopro.stopRecordAndPowerOff();
-
-//See more functions
-GoProHelper helper = gopro.getHelper();
-
-//helper.deleteFilesOnSd()
-
-
-//Example how power on and start, wait some seconds and then stop with power off
-for (int i = 0; i < 10; i++) {
-
-	gopro.powerOnAndStartRecord();
-
-	LogX.info("Waiting...." + 2 * _POLLINGTIME);
-	Thread.sleep(2 * _POLLINGTIME);
-
-	gopro.stopRecordAndPowerOff();
-}
-
-            
-}}}
-
-==How Download==
-
-* Just checkout the code in source tab. [https://code.google.com/p/goprojavaapi/source/checkout]
-* It is a maven project, see how add in the eclipse software. 
-
-
-==URL to connect in go pro==
-{{{
-The cmd are dispatched against GoPro camera via HTTP request. 
-
-The general query structure is  : http://<ip>/<device>/<app>?t=<password>&p=<command>
- 
-Where:<device> can be bacpac or camera.
- 
-From the page, we can extract the following queries;
- 
-Turn on camera : http://<ip>/bacpac/PW?t=<password>&p=%01
-Turn off camera : http://<ip>/bacpac/PW?t=<password>&p=%00
-Change mode    : http://<ip>/bacpac/PW?t=<password>&p=%02
- 
-Start capture : http://<ip>/bacpac/SH?t=<password>&p=%01
-Stop capture : http://<ip>/bacpac/SH?t=<password>&p=%00
- 
-Preview
-On : http://<ip>/camera/PV?t=<password>&p=%02
-Off : http://<ip>/camera/PV?t=<password>&p=%00
- 
-Mode
-Camera     : http://<ip>/camera/CM?t=<password>&p=%00
-Photo        : http://<ip>/camera/CM?t=<password>&p=%01
-Burst         : http://<ip>/camera/CM?t=<password>&p=%02
-Timelapse : http://<ip>/camera/CM?t=<password>&p=%03
-Timelapse : http://<ip>/camera/CM?t=<password>&p=%04
- 
-Orientation
-Head up     : http://<ip>/camera/UP?t=<password>&p=%00
-Head down : http://<ip>/camera/UP?t=<password>&p=%01
- 
-Video Resolution
-WVGA-60  : http://<ip>/camera/VR?t=<password>&p=%00
-WVGA-120  : http://<ip>/camera/VR?t=<password>&p=%01
-720-30   : http://<ip>/camera/VR?t=<password>&p=%02
-720-60   : http://<ip>/camera/VR?t=<password>&p=%03
-960-30   : http://<ip>/camera/VR?t=<password>&p=%04
-960-60   : http://<ip>/camera/VR?t=<password>&p=%05
-1080-30 : http://<ip>/camera/VR?t=<password>&p=%06
- 
-FOV
-wide : http://<ip>/camera/FV?t=<password>&p=%00
-medium : http://<ip>/camera/FV?t=<password>&p=%01
-narrow : http://<ip>/camera/FV?t=<password>&p=%02
- 
-Photo Resolution
-11mp wide     : http://<ip>/camera/PR?t=<password>&p=%00
-8mp medium  : http://<ip>/camera/PR?t=<password>&p=%01
-5mp wide       : http://<ip>/camera/PR?t=<password>&p=%02
-5mp medium  : http://<ip>/camera/PR?t=<password>&p=%03
- 
-Timer
-0,5sec : http://<ip>/camera/TI?t=<password>&p=%00
-1sec    : http://<ip>/camera/TI?t=<password>&p=%01
-2sec    : http://<ip>/camera/TI?t=<password>&p=%02
-5sec    : http://<ip>/camera/TI?t=<password>&p=%03
-10sec  : http://<ip>/camera/TI?t=<password>&p=%04
-30sec  : http://<ip>/camera/TI?t=<password>&p=%05
-60sec  : http://<ip>/camera/TI?t=<password>&p=%06
- 
-Localisation
-On : http://<ip>/camera/LL?t=<password>&p=%01
-Off : http://<ip>/camera/LL?t=<password>&p=%00
- 
-Bip Volume
-0%     : http://<ip>/camera/BS?t=<password>&p=%00
-70%   : http://<ip>/camera/BS?t=<password>&p=%01
-100% : http://<ip>/camera/BS?t=<password>&p=%02
+			if (ENCameraReady.READY.getCode() != cameraReady) {
+				throw new Exception(
+						"The go pro is not ready. Check if it is power on.");
+			}
 
 }}}
